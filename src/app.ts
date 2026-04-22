@@ -18,6 +18,7 @@ app.use(morgan("dev"));
 app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use("/post", router);
 app.use("/gets", router);
+app.use("/get", router);
 
 
 

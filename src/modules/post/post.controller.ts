@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
 import { PostStatus } from "../../../generated/prisma/enums";
+ 
 import pagginationSortingHelper from "../../helpers/pagginationSortingHelper";
 
 const createPost = async (req: Request, res: Response) => {
@@ -33,18 +34,20 @@ const getAllPosts = async (req: Request, res: Response) => {
           ? false
           : undefined;
 
-    const { page, limit, skip, sortBy, sortOrder } = pagginationSortingHelper(req.query)
- 
+    const { page, limit, skip, sortBy, sortOrder } = pagginationSortingHelper(
+      req.query,
+    );
+
     const result = await postService.getAllPosts({
       search: searchString,
       tags,
       isFeatured,
       status,
-      page, 
+      page,
       limit,
       skip,
       sortBy,
-      sortOrder
+      sortOrder,
     });
     res.json(result);
   } catch (error) {
@@ -53,7 +56,19 @@ const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
+const getPostById = async (req: Request, res: Response) => {
+  try {
+    const {postId} = req.params;
+     const result = await postService.getPostById(postId as string);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
 export const postController = {
   createPost,
   getAllPosts,
+  getPostById,
 };
