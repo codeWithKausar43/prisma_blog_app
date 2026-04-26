@@ -1,5 +1,6 @@
 import express from "express";
 import router from "./modules/post/post.router";
+import commentRouter from "./modules/comment/comment.router";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import cors from "cors";
@@ -20,8 +21,8 @@ app.use("/post", router);
 app.use("/gets", router);
 app.use("/get", router);
 
-
-
+app.use("/comment", commentRouter);
+ 
 app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
